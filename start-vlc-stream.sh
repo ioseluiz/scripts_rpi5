@@ -1,8 +1,27 @@
 #!/bin/bash
 # Lanza VLC en fullscreen reproduciendo el stream UDP.
 # Reintenta si VLC se cierra (por ejemplo si el stream se corta temporalmente).
+#
+# La URL del stream se lee de un archivo de configuracion local (no versionado):
+#   $HOME/.config/vlc-stream/stream.conf
+# Debe definir la variable STREAM_URL. Ejemplo:
+#   STREAM_URL="udp://@IP_DE_TU_RPI:PUERTO"
 
-STREAM_URL="udp://@10.107.91.228:8000"
+CONFIG_FILE="$HOME/.config/vlc-stream/stream.conf"
+
+if [ ! -f "$CONFIG_FILE" ]; then
+    echo "ERROR: no existe $CONFIG_FILE" >&2
+    echo "Crea el archivo con la variable STREAM_URL. Ver stream.conf.example." >&2
+    exit 1
+fi
+
+# shellcheck source=/dev/null
+. "$CONFIG_FILE"
+
+if [ -z "$STREAM_URL" ]; then
+    echo "ERROR: STREAM_URL vacia en $CONFIG_FILE" >&2
+    exit 1
+fi
 
 # Evita que la pantalla se apague ni entre en modo blanking.
 xset s off       2>/dev/null
@@ -12,7 +31,7 @@ xset -dpms       2>/dev/null
 # Oculta el cursor tras 0.5s de inactividad (opcional, requiere: sudo apt install unclutter).
 command -v unclutter >/dev/null && unclutter -idle 0.5 -root &
 
-# Espera hasta que haya red (máx 30s) para no arrancar VLC antes que la interfaz esté lista.
+# Espera hasta que haya red (max 30s) para no arrancar VLC antes que la interfaz este lista.
 for i in $(seq 1 30); do
     ip route | grep -q default && break
     sleep 1

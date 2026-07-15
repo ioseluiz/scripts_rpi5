@@ -1,0 +1,10 @@
+# Copia este archivo como stream.conf y edita el valor.
+# El instalador lo hace automaticamente si le indicas la URL.
+#
+# Formato esperado para UDP unicast/multicast:
+#   STREAM_URL="udp://@IP:PUERTO"
+# Otros ejemplos validos:
+#   STREAM_URL="rtsp://usuario:pass@host:puerto/ruta"
+#   STREAM_URL="http://host:puerto/stream"
+
+STREAM_URL="udp://@CAMBIAR_IP:CAMBIAR_PUERTO"
