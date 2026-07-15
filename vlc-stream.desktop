@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=VLC UDP Stream
+Comment=Reproduce el stream UDP en fullscreen al iniciar sesion
+Exec=/home/pi/start-vlc-stream.sh
+X-GNOME-Autostart-enabled=true
+NoDisplay=false
+Terminal=false
